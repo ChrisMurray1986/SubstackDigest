@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Substack Digest — 2026-03-01</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1a1a2e;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 32px;
+            border-bottom: 2px solid #0f3460;
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .date {
+            color: #b0b0b0;
+            font-size: 0.95em;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 20px 0 0 0;
+        }
+
+        .stat-card {
+            background: #16213e;
+            padding: 12px 16px;
+            border-radius: 6px;
+            border-left: 3px solid #3B82F6;
+        }
+
+        .stat-label {
+            color: #a0a0a0;
+            font-size: 0.85em;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #e0e0e0;
+        }
+
+        .articles {
+            margin-top: 32px;
+        }
+
+        .article-section-title {
+            font-size: 1.1em;
+            color: #b0b0b0;
+            margin-top: 28px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #0f3460;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .article-card {
+            background: #16213e;
+            border-left: 4px solid #3B82F6;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .article-card:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        .article-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            gap: 12px;
+        }
+
+        .article-title {
+            flex: 1;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .article-title a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        .article-title a:hover {
+            text-decoration: underline;
+        }
+
+        .score-badge {
+            background: #0f3460;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #e94560;
+            flex-shrink: 0;
+        }
+
+        .badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .domain-badge {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            white-space: nowrap;
+        }
+
+        .source-badges {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .source-badge {
+            background: rgba(107, 114, 128, 0.3);
+            color: #d1d5db;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            white-space: nowrap;
+        }
+
+        .article-meta {
+            font-size: 0.9em;
+            color: #a0a0a0;
+            margin-bottom: 10px;
+        }
+
+        .article-meta a {
+            color: #90caf9;
+            text-decoration: none;
+        }
+
+        .article-meta a:hover {
+            text-decoration: underline;
+        }
+
+        .description {
+            color: #e0e0e0;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .relevance {
+            color: #b0b0b0;
+            font-style: italic;
+            font-size: 0.9em;
+            padding: 8px 0;
+            border-top: 1px solid #0f3460;
+            margin-top: 8px;
+            padding-top: 8px;
+        }
+
+        .lower-priority {
+            display: none;
+        }
+
+        .lower-priority.expanded {
+            display: block;
+        }
+
+        .collapsible-btn {
+            background: #0f3460;
+            color: #60a5fa;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 20px;
+            margin-bottom: 16px;
+            transition: background 0.2s;
+            width: 100%;
+            text-align: left;
+        }
+
+        .collapsible-btn:hover {
+            background: #1a2a4a;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #0f3460;
+            color: #888;
+            font-size: 0.85em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Substack Digest</h1>
+            <p class="date">2026-03-01</p>
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-label">Total Articles</div>
+                    <div class="stat-value">30</div>
+                </div>
+                <div class="stat-card" style="border-left-color: #3B82F6;">
+                    <div class="stat-label">🤖 AI / Tech / Startups</div>
+                    <div class="stat-value">15</div>
+                </div>
+                <div class="stat-card" style="border-left-color: #10B981;">
+                    <div class="stat-label">📊 Business / Strategy</div>
+                    <div class="stat-value">6</div>
+                </div>
+                <div class="stat-card" style="border-left-color: #8B5CF6;">
+                    <div class="stat-label">🎭 Culture / Ideas / Media</div>
+                    <div class="stat-value">6</div>
+                </div>
+                <div class="stat-card" style="border-left-color: #F59E0B;">
+                    <div class="stat-label">🔬 Science / Health</div>
+                    <div class="stat-value">1</div>
+                </div>
+                <div class="stat-card" style="border-left-color: #EF4444;">
+                    <div class="stat-label">💰 Finance / Economics</div>
+                    <div class="stat-value">2</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">📬 Digest</div>
+                    <div class="stat-value">9</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">🔮 For You</div>
+                    <div class="stat-value">17</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">📡 Following</div>
+                    <div class="stat-value">15</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="articles">
+            <div class="article-section-title">Priority Reading</div>
+            <div class="article-card" style="border-left-color: #3B82F6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://artificialcorner.com/p/i-stopped-re-explaining-everything" target="_blank">I Stopped Re-Explaining Everything to Claude Code. This CLAUDE.md File Does It for Me</a></h3>
+                    <div class="score-badge">10</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🤖 AI / Tech / Startups</span>
+                    <span class="source-badge">🔮 For You</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>Artificial Corner</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Practical insights on using Claude and Claude Code for productivity and development tasks.</p>
+
+                <div class="relevance">💡 Directly relevant to Chris's core AI/tech focus - covers practical Claude and agent architectures that align with his deep read patterns.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #3B82F6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://limitededitionjonathan.substack.com/p/so-youre-leaving-chatgpt-heres-what" target="_blank">So You're Leaving ChatGPT. Here's What to Do First.</a></h3>
+                    <div class="score-badge">9</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🤖 AI / Tech / Startups</span>
+                    <span class="source-badge">📬 Digest</span>
+                    <span class="source-badge">🔮 For You</span>
+                    <span class="source-badge">📡 Following</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>Limited Edition Jonathan</strong> by <strong>Limited Edition Jonathan</strong>
+                </div>
+
+                <p class="description">So You're Leaving ChatGPT. Here's What to Do First. from Limited Edition Jonathan by Limited Edition Jonathan.</p>
+
+                <div class="relevance">💡 Content from Limited Edition Jonathan - relevance depends on specific topic coverage.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #3B82F6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://juliadiez.substack.com/p/practice-makes-claude-perfect-a-non-developers-guide" target="_blank">Practice Makes Claude Perfect: A Non-Developer's Guide to Getting the Most Out of Claude Code</a></h3>
+                    <div class="score-badge">9</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🤖 AI / Tech / Startups</span>
+                    <span class="source-badge">🔮 For You</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>The AI-Ready Localizer</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Practical insights on using Claude and Claude Code for productivity and development tasks.</p>
+
+                <div class="relevance">💡 Directly relevant to Chris's core AI/tech focus - covers practical Claude and agent architectures that align with his deep read patterns.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #3B82F6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://www.the-ai-corner.com/p/the-claude-cowork-setup-that-actually" target="_blank">The Claude Cowork Setup That Actually Works</a></h3>
+                    <div class="score-badge">9</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🤖 AI / Tech / Startups</span>
+                    <span class="source-badge">🔮 For You</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>The AI Corner</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Practical insights on using Claude and Claude Code for productivity and development tasks.</p>
+
+                <div class="relevance">💡 Directly relevant to Chris's core AI/tech focus - covers practical Claude and agent architectures that align with his deep read patterns.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #3B82F6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://technicallycurious.substack.com/p/create-your-personal-agent-with-claude" target="_blank">Create your personal agent with Claude</a></h3>
+                    <div class="score-badge">9</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🤖 AI / Tech / Startups</span>
+                    <span class="source-badge">🔮 For You</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>Technically Curious</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Practical insights on using Claude and Claude Code for productivity and development tasks.</p>
+
+                <div class="relevance">💡 Directly relevant to Chris's core AI/tech focus - covers practical Claude and agent architectures that align with his deep read patterns.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #3B82F6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://technicallycurious.substack.com/p/let-claude-keep-track-of-everything" target="_blank">Let Claude Keep Track of Everything</a></h3>
+                    <div class="score-badge">9</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🤖 AI / Tech / Startups</span>
+                    <span class="source-badge">🔮 For You</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>Technically Curious</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Practical insights on using Claude and Claude Code for productivity and development tasks.</p>
+
+                <div class="relevance">💡 Directly relevant to Chris's core AI/tech focus - covers practical Claude and agent architectures that align with his deep read patterns.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #3B82F6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://opinionai.substack.com/p/not-all-ai-agents-are-built-the-same" target="_blank">Not all AI agents are built the same</a></h3>
+                    <div class="score-badge">9</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🤖 AI / Tech / Startups</span>
+                    <span class="source-badge">🔮 For You</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>Opinion AI</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Explores agentic AI architectures and how AI systems can autonomously plan and execute complex workflows.</p>
+
+                <div class="relevance">💡 Directly relevant to Chris's core AI/tech focus - covers practical Claude and agent architectures that align with his deep read patterns.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #3B82F6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://nesibekiriscan.substack.com/p/model-ai-governance-framework" target="_blank">Model AI Governance Framework for Agentic AI</a></h3>
+                    <div class="score-badge">9</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🤖 AI / Tech / Startups</span>
+                    <span class="source-badge">🔮 For You</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>Nesibe Kiris Can</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Explores agentic AI architectures and how AI systems can autonomously plan and execute complex workflows.</p>
+
+                <div class="relevance">💡 Directly relevant to Chris's core AI/tech focus - covers practical Claude and agent architectures that align with his deep read patterns.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #3B82F6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://theslowai.substack.com/p/anthropic-pentagon-ai-safety-blacklist" target="_blank">Nobody Blinked. Now What?</a></h3>
+                    <div class="score-badge">8</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🤖 AI / Tech / Startups</span>
+                    <span class="source-badge">📬 Digest</span>
+                    <span class="source-badge">🔮 For You</span>
+                    <span class="source-badge">📡 Following</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>The Slow AI</strong> by <strong>Slow AI</strong>
+                </div>
+
+                <p class="description">Thoughtful analysis from The Slow AI on AI policy and implications.</p>
+
+                <div class="relevance">💡 Content from The Slow AI - relevance depends on specific topic coverage.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #3B82F6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://heathercoxrichardson.substack.com/p/february-28-2026" target="_blank">February 28, 2026</a></h3>
+                    <div class="score-badge">8</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🤖 AI / Tech / Startups</span>
+                    <span class="source-badge">🔮 For You</span>
+                    <span class="source-badge">📡 Following</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>Letters from an American</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">News digest from Letters from an American covering recent political and social developments.</p>
+
+                <div class="relevance">💡 Content from Letters from an American - relevance depends on specific topic coverage.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #3B82F6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://www.ai-supremacy.com/p/how-to-use-notebooklm-with-gemini-real-use-cases" target="_blank">How to Use NotebookLM with Gemini: A Practical Guide with 30 Use Cases</a></h3>
+                    <div class="score-badge">7</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🤖 AI / Tech / Startups</span>
+                    <span class="source-badge">🔮 For You</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>AI Supremacy</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Guide on using NotebookLM and Gemini for processing documents and creating structured summaries.</p>
+
+                <div class="relevance">💡 Content from AI Supremacy - relevance depends on specific topic coverage.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #10B981;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://trishanlekhi.substack.com/p/this-is-why-you-keep-restarting-your" target="_blank">This Is Why You Keep Restarting Your Life</a></h3>
+                    <div class="score-badge">7</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">📊 Business / Strategy</span>
+                    <span class="source-badge">🔮 For You</span>
+                    <span class="source-badge">📡 Following</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>Freedom/Future</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Article from Freedom/Future exploring insights on personal development and transformation.</p>
+
+                <div class="relevance">💡 From preferred author - relevant to strategic thinking and first principles.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #10B981;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://pmresearcher.substack.com/p/what-i-learned-about-agentic-reasoning" target="_blank">What I Learned About Agentic Reasoning</a></h3>
+                    <div class="score-badge">7</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">📊 Business / Strategy</span>
+                    <span class="source-badge">🔮 For You</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>PM Researcher</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Explores agentic AI architectures and how AI systems can autonomously plan and execute complex workflows.</p>
+
+                <div class="relevance">💡 Related to AI tooling and agent workflows, which are top priorities in Chris's reading profile.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #3B82F6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://www.noahpinion.blog/p/the-shape-of-the-multipolar-world" target="_blank">The Shape of the Multipolar World</a></h3>
+                    <div class="score-badge">7</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🤖 AI / Tech / Startups</span>
+                    <span class="source-badge">📡 Following</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>Noahpinion</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">The Shape of the Multipolar World from Noahpinion by .</p>
+
+                <div class="relevance">💡 Content from Noahpinion - relevance depends on specific topic coverage.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #3B82F6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://aiquill.substack.com/p/gemini-nano-banana-2-tutorial-beginner" target="_blank">Gemini Nano Banana 2 Tutorial: Beginner to Advanced</a></h3>
+                    <div class="score-badge">7</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🤖 AI / Tech / Startups</span>
+                    <span class="source-badge">📡 Following</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>AI Quill</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Tutorial from AI Quill on AI and machine learning techniques.</p>
+
+                <div class="relevance">💡 Content from AI Quill - relevance depends on specific topic coverage.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #3B82F6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://pythonlibraries.substack.com/p/6-best-practices-for-using-codex" target="_blank">6 Best Practices for Using CodeX from OpenAI</a></h3>
+                    <div class="score-badge">7</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🤖 AI / Tech / Startups</span>
+                    <span class="source-badge">📡 Following</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>Top Python Libraries</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Beginner-friendly guide to maximizing Claude Code for non-developers and automating workflows.</p>
+
+                <div class="relevance">💡 Directly relevant to Chris's core AI/tech focus - covers practical Claude and agent architectures that align with his deep read patterns.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #3B82F6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://frontierstocks.substack.com/p/hormuz-crisis-oil-toward-100-inflation" target="_blank">Hormuz crisis: Oil toward $100, inflation fears rise</a></h3>
+                    <div class="score-badge">7</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🤖 AI / Tech / Startups</span>
+                    <span class="source-badge">📡 Following</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>Frontier Stocks</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Analysis of geopolitical tensions affecting oil prices and inflation.</p>
+
+                <div class="relevance">💡 Content from Frontier Stocks - relevance depends on specific topic coverage.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #F59E0B;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://danackers.substack.com/p/when-the-target-no-longer-fits" target="_blank">Am I Impressed?</a></h3>
+                    <div class="score-badge">5</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🔬 Science / Health</span>
+                    <span class="source-badge">📬 Digest</span>
+                    <span class="source-badge">📡 Following</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>The Adaptive Human</strong> by <strong>Dan Ackers</strong>
+                </div>
+
+                <p class="description">Am I Impressed? from The Adaptive Human by Dan Ackers.</p>
+
+                <div class="relevance">💡 Health/science content - typically lower priority unless directly tied to AI or first principles.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #8B5CF6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://theintellectualedge.substack.com/p/anthony-boltons-investment-strategy" target="_blank">Anthony Bolton's Investment Strategy</a></h3>
+                    <div class="score-badge">5</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🎭 Culture / Ideas / Media</span>
+                    <span class="source-badge">📬 Digest</span>
+                    <span class="source-badge">🔮 For You</span>
+                    <span class="source-badge">📡 Following</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>The Intellectual Edge</strong> by <strong>The Intellectual Edge</strong>
+                </div>
+
+                <p class="description">Investment strategy analysis from legendary fund manager Anthony Bolton.</p>
+
+                <div class="relevance">💡 Investment strategy content - typically lower priority, but may appeal given systemic analysis angle.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #8B5CF6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://jessicatalisman.substack.com/p/the-internet-of-probability" target="_blank">The Internet of Probability</a></h3>
+                    <div class="score-badge">5</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🎭 Culture / Ideas / Media</span>
+                    <span class="source-badge">📬 Digest</span>
+                    <span class="source-badge">📡 Following</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>Intentional Arrangement</strong> by <strong>Jessica Talisman</strong>
+                </div>
+
+                <p class="description">The Internet of Probability from Intentional Arrangement by Jessica Talisman.</p>
+
+                <div class="relevance">💡 Culture/ideas content - typically lower priority unless from preferred authors like Trishan Lekhi.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #10B981;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://ruben.substack.com/p/banana-2-3bd" target="_blank">Banana: How to Set Up Nano Banana 2 from Gemini</a></h3>
+                    <div class="score-badge">5</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">📊 Business / Strategy</span>
+                    <span class="source-badge">📬 Digest</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>Ruben Hassid</strong> by <strong>Ruben Hassid</strong>
+                </div>
+
+                <p class="description">Banana: How to Set Up Nano Banana 2 from Gemini from Ruben Hassid by Ruben Hassid.</p>
+
+                <div class="relevance">💡 Business/strategy content - relevant when tied to AI impact or first principles thinking.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #10B981;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://pmresearcher.substack.com/p/the-systems-thinking-manifesto" target="_blank">The Systems Thinking Manifesto</a></h3>
+                    <div class="score-badge">5</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">📊 Business / Strategy</span>
+                    <span class="source-badge">🔮 For You</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>PM Researcher</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Framework for analyzing complex problems through systems thinking principles.</p>
+
+                <div class="relevance">💡 Business/strategy content - relevant when tied to AI impact or first principles thinking.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #10B981;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://oleolesen-bagneux.substack.com/p/its-a-new-day-for-search" target="_blank">It's a New Day For Search</a></h3>
+                    <div class="score-badge">5</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">📊 Business / Strategy</span>
+                    <span class="source-badge">🔮 For You</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>Books by Ole Olesen-Bagneux</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Examines how AI is transforming search engines and information retrieval.</p>
+
+                <div class="relevance">💡 Business/strategy content - relevant when tied to AI impact or first principles thinking.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #10B981;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://ruben.substack.com/p/master-ai-in-17-days" target="_blank">Master AI In 17 Days</a></h3>
+                    <div class="score-badge">5</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">📊 Business / Strategy</span>
+                    <span class="source-badge">🔮 For You</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>Ruben Hassid</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Master AI In 17 Days from Ruben Hassid by .</p>
+
+                <div class="relevance">💡 Business/strategy content - relevant when tied to AI impact or first principles thinking.</div>
+            </div>
+            <button class="collapsible-btn" onclick="toggleLowerPriority()">
+                ▼ Lower Priority Articles (6)
+            </button>
+            <div id="lower-priority-section" class="lower-priority">
+            <div class="article-card" style="border-left-color: #8B5CF6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://www.ayurvedapost.com/p/the-standards-era-has-begun-ayurvedas" target="_blank">The Standards Era Has Begun: Ayurveda's Global Inflection Point</a></h3>
+                    <div class="score-badge">4</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🎭 Culture / Ideas / Media</span>
+                    <span class="source-badge">📬 Digest</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>Ayurveda Post</strong> by <strong>Centre for Ayurveda</strong>
+                </div>
+
+                <p class="description">The Standards Era Has Begun: Ayurveda's Global Inflection Point from Ayurveda Post by Centre for Ayurveda.</p>
+
+                <div class="relevance">💡 Culture/ideas content - typically lower priority unless from preferred authors like Trishan Lekhi.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #8B5CF6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://metz.substack.com/p/the-new-poverty" target="_blank">The New Poverty</a></h3>
+                    <div class="score-badge">4</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🎭 Culture / Ideas / Media</span>
+                    <span class="source-badge">📬 Digest</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>LP Blueprint</strong> by <strong>LP Blueprint</strong>
+                </div>
+
+                <p class="description">The New Poverty from LP Blueprint by LP Blueprint.</p>
+
+                <div class="relevance">💡 Culture/ideas content - typically lower priority unless from preferred authors like Trishan Lekhi.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #EF4444;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://michaeljburry.substack.com/p/history-rhymes-large-language-models" target="_blank">History Rhymes: Large Language Models Off to a Bad Start?</a></h3>
+                    <div class="score-badge">4</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">💰 Finance / Economics</span>
+                    <span class="source-badge">📬 Digest</span>
+                    <span class="source-badge">📡 Following</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>Cassandra Unchained</strong> by <strong>Michael Burry</strong>
+                </div>
+
+                <p class="description">History Rhymes: Large Language Models Off to a Bad Start? from Cassandra Unchained by Michael Burry.</p>
+
+                <div class="relevance">💡 Finance/investing content - typically scores 2-4 as Chris rarely reads pure financial analysis.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #8B5CF6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://javarevisited.substack.com/p/thank-you-for-reading-javarevisited-1bf" target="_blank">Thank you for Reading Javarevisited: 35% off limited-time offer</a></h3>
+                    <div class="score-badge">4</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🎭 Culture / Ideas / Media</span>
+                    <span class="source-badge">📡 Following</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>Javarevisited Newsletter</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Thank you for Reading Javarevisited: 35% off limited-time offer from Javarevisited Newsletter by .</p>
+
+                <div class="relevance">💡 Culture/ideas content - typically lower priority unless from preferred authors like Trishan Lekhi.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #8B5CF6;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://chippub.substack.com/p/silicon-photonics-chip-the-foundry" target="_blank">Silicon Photonics Chip: The Foundry</a></h3>
+                    <div class="score-badge">4</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">🎭 Culture / Ideas / Media</span>
+                    <span class="source-badge">📡 Following</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>ChipPub</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Emerging technology in optical computing and its foundry implications.</p>
+
+                <div class="relevance">💡 Culture/ideas content - typically lower priority unless from preferred authors like Trishan Lekhi.</div>
+            </div>
+            <div class="article-card" style="border-left-color: #EF4444;">
+                <div class="article-header">
+                    <h3 class="article-title"><a href="https://robopub.substack.com/p/spacex-at-15t-savior-or-ipo-trap" target="_blank">SpaceX at $1.5T: Savior or IPO trap?</a></h3>
+                    <div class="score-badge">3</div>
+                </div>
+
+                <div class="badges">
+                    <span class="domain-badge">💰 Finance / Economics</span>
+                    <span class="source-badge">📡 Following</span>
+                </div>
+
+                <div class="article-meta">
+                    <strong>RoboPub</strong> by <strong>Unknown</strong>
+                </div>
+
+                <p class="description">Valuation analysis and IPO potential of SpaceX at $1.5 trillion.</p>
+
+                <div class="relevance">💡 Finance/investing content - typically scores 2-4 as Chris rarely reads pure financial analysis.</div>
+            </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Generated on 2026-03-01 09:24:02 UTC</p>
+            <p>Dashboard for Chris — Substack Intelligence v1.0</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleLowerPriority() {
+            const section = document.getElementById('lower-priority-section');
+            section.classList.toggle('expanded');
+            const btn = event.target;
+            if (section.classList.contains('expanded')) {
+                btn.textContent = '▲ Lower Priority Articles (6)';
+            } else {
+                btn.textContent = '▼ Lower Priority Articles (6)';
+            }
+        }
+    </script>
+</body>
+</html>
